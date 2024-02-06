@@ -1,0 +1,6 @@
+def run() -> None:
+    ...
+
+
+def display() -> None:
+    ...
