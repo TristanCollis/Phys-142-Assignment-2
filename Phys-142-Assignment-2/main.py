@@ -9,4 +9,6 @@ import problem_d
 # problem_a.display(problem_a.run(3000), show=True)
 # problem_b.display(problem_b.run())
 
-# problem_d.display(problem_d.run(constants.ALPHA * np.arange(1, 10)), show=True)
+alphas = constants.ALPHA * np.linspace(0.5, 2, 25)
+
+# problem_d.display(problem_d.run_vectorized(constants.ALPHA * np.linspace(0.5, 2, 20)), show=True)
