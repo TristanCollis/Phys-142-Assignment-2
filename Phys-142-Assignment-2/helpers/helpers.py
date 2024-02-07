@@ -11,7 +11,7 @@ def integrate_vectorized(integrand: np.ndarray[complex, Any],  axis: int, dx: fl
     return np.sum(integrand, axis=axis) * dx
 
 
-def normalize(psi: np.ndarray[complex, Any], axis: int | None = None) -> np.ndarray[complex, Any]:
+def normalize(psi: np.ndarray[complex, Any]) -> np.ndarray[complex, Any]:
     return psi / np.sqrt(integrate(np.abs(psi) ** 2))
 
 
@@ -21,8 +21,7 @@ def normalize_vectorized(psi: np.ndarray[complex, Any], axis: int) -> np.ndarray
 
 def expectation(
     operator: Callable[[np.ndarray[complex, Any]], np.ndarray[complex, Any]],
-    psi: np.ndarray[complex, Any],
-    axis: int | None = None
+    psi: np.ndarray[complex, Any]
 ) -> float:
     return np.real(integrate(operator(psi)))
 
