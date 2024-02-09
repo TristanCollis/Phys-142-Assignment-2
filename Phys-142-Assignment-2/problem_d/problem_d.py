@@ -114,7 +114,7 @@ def display(
     plt.xlabel(r"$\Delta E$")
     plt.ylabel(r"$t_{tunnel}$")
 
-    plt.savefig(fname="problem_a.png")
+    plt.savefig(fname="problem_d.png")
     if show:
         plt.show()
     plt.clf()
