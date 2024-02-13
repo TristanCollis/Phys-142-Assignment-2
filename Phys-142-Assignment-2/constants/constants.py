@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Callable
 import numpy as np
 
 EPSILON = np.pi / 128
@@ -11,6 +11,7 @@ DX = (X_ND - X_0) / ND
 X = np.linspace(X_0, X_ND, ND + 1).reshape(-1, 1)
 
 ALPHA = 0.4
+ALPHA_AS_ARRAY = np.array([ALPHA])
 
 X_MIN = ALPHA ** -(1 / 2)
 
@@ -23,10 +24,3 @@ PSI_INITIAL = PSI_PLUS
 
 PSI_SYMMETRIC = 2 ** -(1 / 2) * (PSI_PLUS + PSI_MINUS)
 PSI_ASYMMETRIC = 2 ** -(1 / 2) * (PSI_PLUS - PSI_MINUS)
-
-
-def V(x: np.ndarray[float, Any], alpha: float = ALPHA) -> np.ndarray[float, Any]:
-    return alpha * x**4 - 2 * x**2 + 1 / alpha
-
-
-K = np.exp(1j * ((1 / (2 * EPSILON)) * (X - X.T) ** 2 - V((X.T + X) / 2) * EPSILON))
