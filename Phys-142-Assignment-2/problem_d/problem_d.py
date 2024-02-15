@@ -44,7 +44,6 @@ def tunnel_time(
     K_alpha = K(alpha)
 
     for t in range(const.NT + 1):
-        print(f"{t} / {const.NT+1}")
         psi_t = normalize(K_alpha @ psi_t)
         expectation_x[:, t] = expectation(x_operator, psi_t).flat
 
@@ -93,9 +92,9 @@ def display(
     plt.xlabel(r"$\Delta E$")
     plt.ylabel(r"$t_{tunnel}$")
 
-    if show:
-        plt.show()
-
     if save:
         plt.savefig(fname="problem_d.png")
-    plt.clf()
+
+    if show:
+        plt.show()
+        

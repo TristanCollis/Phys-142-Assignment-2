@@ -40,11 +40,11 @@ def display(
     plt.xlabel(r"$t$")
     plt.ylabel(r"$\langle x \rangle $")
 
-    if show:
-        plt.show()
-
     if save:
         plt.savefig(fname="problem_a.png")
 
-    plt.clf()
+    if show:
+        plt.show()
+
+
 
