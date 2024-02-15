@@ -1,35 +1,61 @@
 from typing import Any, Callable
 import numpy as np
 import constants
+from functools import cache
+
+
+def V(
+    x: np.ndarray[float, Any], alpha: np.ndarray[float, Any] = constants.ALPHA_AS_ARRAY
+) -> np.ndarray[float, Any]:
+    return alpha * x**4 - 2 * x**2 + 1 / alpha
+
+
+def K(
+    alpha: np.ndarray[float, Any] = constants.ALPHA_AS_ARRAY
+) -> np.ndarray[complex, Any]:
+    return np.exp(
+        1j
+        * (
+            (1 / (2 * constants.EPSILON)) * (constants.X - constants.X.T) ** 2
+            - V((constants.X.T + constants.X) / 2, alpha) * constants.EPSILON
+        )
+    )
+
+
+K_0 = K()
 
 
 def integrate(integrand: np.ndarray[complex, Any], dx: float = constants.DX) -> complex:
     return np.sum(integrand) * dx
 
 
-def integrate_vectorized(integrand: np.ndarray[complex, Any],  axis: int, dx: float = constants.DX) -> np.ndarray[complex, Any]:
-    return np.sum(integrand, axis=axis) * dx
+def integrate_vectorized(
+    integrand: np.ndarray[complex, Any], axis: int, dx: float = constants.DX
+) -> np.ndarray[complex, Any]:
+    return np.expand_dims(np.sum(integrand, axis=axis), axis) * dx
 
 
 def normalize(psi: np.ndarray[complex, Any]) -> np.ndarray[complex, Any]:
     return psi / np.sqrt(integrate(np.abs(psi) ** 2))
 
 
-def normalize_vectorized(psi: np.ndarray[complex, Any], axis: int) -> np.ndarray[complex, Any]:
+def normalize_vectorized(
+    psi: np.ndarray[complex, Any], axis: int
+) -> np.ndarray[complex, Any]:
     return psi / np.sqrt(integrate_vectorized(np.abs(psi) ** 2, axis=axis))
 
 
 def expectation(
     operator: Callable[[np.ndarray[complex, Any]], np.ndarray[complex, Any]],
-    psi: np.ndarray[complex, Any]
+    psi: np.ndarray[complex, Any],
 ) -> float:
     return np.real(integrate(operator(psi)))
 
 
 def expectation_vectorized(
-        operator: Callable[[np.ndarray[complex, Any]], np.ndarray[complex, Any]],
+    operator: Callable[[np.ndarray[complex, Any]], np.ndarray[complex, Any]],
     psi: np.ndarray[complex, Any],
-    axis: int
+    axis: int,
 ) -> np.ndarray[float, Any]:
     return np.real(integrate_vectorized(operator(psi), axis=axis))
 
@@ -40,12 +66,15 @@ def partial_dx(
     return (psi[2:] - psi[:-2]) / (2 * dx)
 
 
-def x_operator(psi: np.ndarray[complex, Any], x: np.ndarray[float, Any] = constants.X) -> np.ndarray[complex, Any]:
+def x_operator(
+    psi: np.ndarray[complex, Any], x: np.ndarray[float, Any] = constants.X
+) -> np.ndarray[complex, Any]:
     return x * np.abs(psi) ** 2
 
 
-def H_operator(psi: np.ndarray[complex, Any]) -> np.ndarray[complex, Any]:
+def H_operator(
+    psi: np.ndarray[complex, Any], alpha: np.ndarray[float, Any] = constants.ALPHA_AS_ARRAY
+) -> np.ndarray[complex, Any]:
     return np.conj(psi)[2:-2] * (
-        -(0.5) * partial_dx(partial_dx(psi))
-        + constants.V(constants.X[2:-2]) * psi[2:-2]
+        -(0.5) * partial_dx(partial_dx(psi)) + V(constants.X, alpha)[2:-2] * psi[2:-2]
     )

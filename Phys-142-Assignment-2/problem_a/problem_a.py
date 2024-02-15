@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import constants
-from helpers import expectation, normalize, x_operator
+from helpers import expectation, normalize, x_operator, K_0
 
 
 def run(timesteps: int) -> np.ndarray[float, Any]:
@@ -12,7 +12,7 @@ def run(timesteps: int) -> np.ndarray[float, Any]:
 
     for t in range(timesteps):
         expectation_x[t] = expectation(x_operator, psi_t)
-        psi_t = normalize(constants.K @ psi_t)
+        psi_t = normalize(K_0 @ psi_t)
 
     return expectation_x
 
