@@ -85,8 +85,9 @@ def display(
 
     proportionality_const = inverse_curve_approximation(delta_Es, t_tunnels)
 
-    plt.scatter(delta_Es, t_tunnels)
-    plt.plot(delta_Es, inverse_fit(delta_Es, proportionality_const))
+    plt.scatter(delta_Es, t_tunnels, label=r"$\Delta E$ vs $t_{tunnel}$")
+    plt.plot(delta_Es, inverse_fit(delta_Es, proportionality_const), label=f"{proportionality_const:.3f} / "+r"$\Delta E$")
+    plt.legend()
 
     plt.title(r"$\Delta E$ vs $t_{tunnel}$")
     plt.xlabel(r"$\Delta E$")
