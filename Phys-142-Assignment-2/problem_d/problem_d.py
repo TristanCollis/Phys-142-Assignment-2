@@ -95,7 +95,6 @@ def display(
 
     if save:
         plt.savefig(fname="problem_d.png")
-
     if show:
         plt.show()
         
